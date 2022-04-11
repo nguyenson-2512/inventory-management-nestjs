@@ -12,6 +12,17 @@ export class UserService extends BaseService<User, UserRepository> {
     super(repository);
   }
 
+  public async getByEmail(email: string) {
+    const user = await this.repository.findOne({ email });
+    if (user) {
+      return user;
+    }
+    throw new HttpException(
+      'User with this email does not exist',
+      HttpStatus.NOT_FOUND,
+    );
+  }
+
   public async updateUser(id: number, body: UpdateUserDto): Promise<User> {
     const user = await this.repository.findOne(id);
     if (!user) {

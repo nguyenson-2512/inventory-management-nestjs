@@ -18,11 +18,11 @@ export class User extends BaseEntity {
   @Column({ type: 'varchar', length: 120 })
   public name: string;
 
-  @Column({ type: 'varchar', length: 120 })
+  @Column({ type: 'varchar', length: 120, nullable: false, unique: true })
   public email: string;
 
-  //   @Column()
-  //   public password: number;
+  @Column({ nullable: false })
+  password: string;
 
   @CreateDateColumn({ type: 'timestamp' })
   public createdAt!: Date;
