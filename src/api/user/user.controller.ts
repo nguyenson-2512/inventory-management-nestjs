@@ -8,9 +8,11 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { BaseController } from 'src/common/base/base.controller';
 import { DeleteResult } from 'typeorm';
+import JwtAuthenticationGuard from '../auth/strategy/jwt-auth.guard';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { User } from './user.entity';
 import { UserService } from './user.service';
@@ -21,6 +23,7 @@ export class UserController extends BaseController {
   private readonly service: UserService;
 
   @Get(':id')
+  @UseGuards(JwtAuthenticationGuard)
   public getUser(@Param('id', ParseIntPipe) id: number): Promise<User> {
     return this.service.findById(id);
   }

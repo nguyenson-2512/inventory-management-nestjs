@@ -2,10 +2,17 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserService } from 'src/api/user/user.service';
 import { RegisterDTO } from './auth.dto';
 import * as bcrypt from 'bcrypt';
+import { ConfigService } from '@nestjs/config';
+import { TokenPayload } from 'src/common/interfaces/token-payload.interface';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly configService: ConfigService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   public async register(registrationData: RegisterDTO) {
     const hashedPassword = await bcrypt.hash(registrationData.password, 10);
@@ -58,5 +65,17 @@ export class AuthService {
         HttpStatus.BAD_REQUEST,
       );
     }
+  }
+
+  public getCookieWithJwtToken(userId: number) {
+    const payload: TokenPayload = { userId };
+    const token = this.jwtService.sign(payload);
+    return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get(
+      'JWT_EXPIRATION_TIME',
+    )}`;
+  }
+
+  public getCookieForLogOut() {
+    return `Authentication=; HttpOnly; Path=/; Max-Age=0`;
   }
 }
