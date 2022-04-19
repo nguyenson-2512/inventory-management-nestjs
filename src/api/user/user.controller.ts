@@ -11,6 +11,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { BaseController } from 'src/common/base/base.controller';
+import { FindOneParams } from 'src/common/validators/common.validator';
 import { DeleteResult } from 'typeorm';
 import JwtAuthenticationGuard from '../auth/strategy/jwt-auth.guard';
 import { CreateUserDto, UpdateUserDto } from './user.dto';

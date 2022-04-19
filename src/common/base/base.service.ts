@@ -1,18 +1,17 @@
 import { BaseEntity, DeleteResult, Repository } from 'typeorm';
-// import { IBaseService } from './i.base.service';
 import { EntityId } from 'typeorm/repository/EntityId';
 import { IBaseService } from '../interfaces/base.service';
-// import { LoggerService } from './logger/custom.logger';
+import { LoggerService } from '../logger/logger.service';
 
 export class BaseService<T extends BaseEntity, R extends Repository<T>>
   implements IBaseService<T>
 {
   protected readonly repository: R;
-  //TODO: service logger
-  //   protected readonly logger: LoggerService;
+  protected readonly logger: LoggerService;
 
   constructor(repository: R) {
     this.repository = repository;
+    this.logger = new LoggerService();
   }
 
   index(): Promise<T[]> {
