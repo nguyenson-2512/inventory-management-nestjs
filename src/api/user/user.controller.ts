@@ -9,15 +9,18 @@ import {
   Post,
   Put,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { BaseController } from 'src/common/base/base.controller';
 import { FindOneParams } from 'src/common/validators/common.validator';
+import { ExcludeNullInterceptor } from 'src/interceptors/exclude-null.interceptor';
 import { DeleteResult } from 'typeorm';
 import JwtAuthenticationGuard from '../auth/strategy/jwt-auth.guard';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { User } from './user.entity';
 import { UserService } from './user.service';
 
+@UseInterceptors(ExcludeNullInterceptor)
 @Controller('user')
 export class UserController extends BaseController {
   @Inject(UserService)

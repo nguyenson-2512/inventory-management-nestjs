@@ -6,7 +6,9 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   BaseEntity,
+  OneToMany,
 } from 'typeorm';
+import Address from '../address/address.entity';
 
 @Entity()
 export class User extends BaseEntity {
@@ -31,4 +33,7 @@ export class User extends BaseEntity {
 
   @UpdateDateColumn({ type: 'timestamp' })
   public updatedAt!: Date;
+
+  @OneToMany(() => Address, (address: Address) => address.user)
+  public addresses: Address[];
 }
