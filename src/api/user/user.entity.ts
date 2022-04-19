@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -22,6 +23,7 @@ export class User extends BaseEntity {
   public email: string;
 
   @Column({ nullable: false })
+  @Exclude()
   password: string;
 
   @CreateDateColumn({ type: 'timestamp' })
