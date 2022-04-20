@@ -14,7 +14,7 @@ export class BaseService<T extends BaseEntity, R extends Repository<T>>
     this.logger = new LoggerService();
   }
 
-  index(): Promise<T[]> {
+  findAll(): Promise<T[]> {
     return this.repository.find();
   }
 

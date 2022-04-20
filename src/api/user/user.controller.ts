@@ -14,13 +14,15 @@ import {
 import { BaseController } from 'src/common/base/base.controller';
 import { FindOneParams } from 'src/common/validators/common.validator';
 import { ExcludeNullInterceptor } from 'src/interceptors/exclude-null.interceptor';
+import { TransformInterceptor } from 'src/interceptors/transform.interceptor';
 import { DeleteResult } from 'typeorm';
 import JwtAuthenticationGuard from '../auth/strategy/jwt-auth.guard';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { User } from './user.entity';
 import { UserService } from './user.service';
 
-@UseInterceptors(ExcludeNullInterceptor)
+// @UseInterceptors(ExcludeNullInterceptor)
+@UseInterceptors(TransformInterceptor)
 @Controller('user')
 export class UserController extends BaseController {
   @Inject(UserService)
@@ -30,6 +32,12 @@ export class UserController extends BaseController {
   @UseGuards(JwtAuthenticationGuard)
   public getUser(@Param('id', ParseIntPipe) id: number): Promise<User> {
     return this.service.findById(id);
+  }
+
+  @Get()
+  @UseGuards(JwtAuthenticationGuard)
+  public getAllUsers() {
+    return this.service.findAll();
   }
 
   @Post()
